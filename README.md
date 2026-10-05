@@ -1,77 +1,56 @@
 # Tanish Phalswal — Portfolio
 
-Full-stack developer + DevOps engineer portfolio. Built with Next.js 15 (App Router), TypeScript, Tailwind CSS v4, and Framer Motion.
+Next.js 16 portfolio for full-stack development, DevOps, websites, UI/UX, digital marketing, and graphic design.
 
-## Run locally
+## Run
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-Open http://localhost:3000
+Open http://localhost:3000. Run `npm test`, `npm run lint`, and `npm run build` before deployment.
 
-## Deploy to Vercel
+## Content
 
-1. Push this folder to a GitHub repo
-2. Go to vercel.com → New Project → import the repo
-3. Framework preset: Next.js (auto-detected)
-4. Click Deploy — no env vars needed
+- `lib/data.ts`: profile, stack, Web App projects, experience, certifications, workflow.
+- `lib/work-data.ts`: work categories, website cards, named UI/UX studies, marketing summaries.
+- `lib/work-media.ts`: discovers media in project folders and reads its real dimensions at build time.
+- `components/Work.tsx`: five category tabs; `components/Projects.tsx` keeps the original Web App cards.
 
-Or via CLI:
-```bash
-npm install -g vercel
-vercel
+The portfolio currently uses illustrative SVG mockups for Web Apps whose real screens are behind client logins. The three live website cards use captured homepage screenshots. Realty Vue is labeled in progress and has no live URL.
+
+## Add screenshots and artwork
+
+Place JPG, PNG, WebP, or AVIF images in the appropriate folder:
+
+```text
+public/portfolio/
+  ui-ux/
+    reality-vue/
+    random-it-solution/
+    leecots/
+    mukherjee-global/
+    hrms/
+  digital-marketing/
+    meta-lead-campaigns/
+    search-visibility/
+  graphic-design/
+    branding/
+    social-media/
+    print/
+    other/
+  websites/
+    cross-learning/home.jpg
+    calance-training/home.jpg
+    reality-vue/
+    cut-edge-technology/home.jpg
 ```
 
-## Edit your content
+Use descriptive names with a numeric prefix for screen order, e.g. `01-dashboard.webp`, `02-leads.webp`. The UI/UX and marketing galleries discover files automatically after the next build/deployment. Graphic artwork appears automatically in a compact, mixed-ratio masonry layout; the first 12 items render initially and the rest appear on demand. Images are resized by `next/image`; keep originals reasonably compressed and omit confidential data from screenshots.
 
-All resume content lives in one file: `lib/data.ts`
-- `profile` — name, role, summary, contact info
-- `stack` — your tech stack grouped by category
-- `projects` — project cards (Manetor, Setlup, Suppkart)
-- `experience` — work history bullets
-- `certifications` — cert list
-- `deployLog` — the animated terminal lines in the hero
+The Realty Vue website cover can be added at `public/portfolio/websites/reality-vue/home.jpg` when a shareable screenshot exists, then set `cover` in `lib/work-data.ts`. Add a live URL only after the site launches.
 
-Edit that file and the whole site updates — no need to touch components.
+## Notes
 
-## Add real screenshots
-
-Currently using generated SVG mockups (`components/ProjectMockup.tsx`) since no real screenshots were provided. To swap in real screenshots:
-1. Drop images into `public/projects/` (e.g. `manetor.png`)
-2. In `components/Projects.tsx`, replace `<ProjectMockup kind={...} />` with a Next.js `<Image src="/projects/manetor.png" .../>`
-
-## Structure
-
-```
-app/
-  layout.tsx       — fonts (Space Grotesk, Inter, JetBrains Mono) + metadata
-  page.tsx         — assembles all sections
-  globals.css      — design tokens (colors, glass effect, grid background)
-components/
-  Nav.tsx          — sticky nav, glass on scroll
-  Hero.tsx         — headline + animated "deploy console" terminal (3D tilt)
-  Stack.tsx        — tech stack grouped by category
-  BuildWorkflow.tsx— Figma -> Claude/Codex -> QA -> Ship pipeline section
-  Projects.tsx     — project cards w/ mockups (3D tilt)
-  ProjectMockup.tsx— SVG mockup generator (crm / marketplace / ecommerce)
-  Experience.tsx   — work history + certifications
-  Contact.tsx      — CTA + magnetic contact buttons
-  Footer.tsx
-  TiltCard.tsx     — reusable 3D mouse-tilt wrapper (degrades gracefully on touch)
-  MagneticButton.tsx — buttons that subtly follow the cursor
-  SectionHeader.tsx   — consistent eyebrow/title/description rhythm
-  AmbientOrbs.tsx     — floating blurred background depth
-lib/
-  data.ts          — all content, single source of truth (now includes buildWorkflow)
-```
-
-## v2 additions (latest pass)
-- 3D tilt on hero console, stack cards, project cards, experience cards (mouse-follow, perspective transform)
-- Cursor-glow effect on glass panels (`.glow-surface`)
-- Magnetic buttons in hero and contact section
-- Ambient floating gradient orbs for background depth
-- New "How it actually gets built" section — Figma → Claude/Codex → QA/Burp Suite → CI/CD ship pipeline
-- Icons throughout (lucide-react) replacing text bullets/symbols
-- Standardized section spacing via `.section-pad` utility class
+The homepage is built from `app/page.tsx` and uses locally stored screenshot assets. Employer links in Experience identify the companies; they do not imply ownership of each company's corporate website.

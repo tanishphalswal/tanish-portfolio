@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Briefcase, Award, CircleDot } from "lucide-react";
+import { Briefcase, Award, CircleDot, ExternalLink } from "lucide-react";
 import { certifications, experience } from "@/lib/data";
 import SectionHeader from "./SectionHeader";
 import TiltCard from "./TiltCard";
@@ -37,7 +37,10 @@ export default function Experience() {
                         {exp.role}
                       </h3>
                       <p className="text-text-muted text-sm mt-1">
-                        {exp.company} · {exp.location}
+                        <a href={exp.website} target="_blank" rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 hover:text-accent-blue transition-colors underline underline-offset-4 decoration-panel-border-strong">
+                          {exp.company}<ExternalLink size={12} aria-hidden="true" />
+                        </a> · {exp.location}
                       </p>
                     </div>
                   </div>

@@ -1,17 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 
 const links = [
+  { href: "#work", label: "Work" },
   { href: "#stack", label: "Stack" },
-  { href: "#projects", label: "Projects" },
   { href: "#experience", label: "Experience" },
   { href: "#contact", label: "Contact" },
 ];
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -46,6 +47,7 @@ export default function Nav() {
       >
         <a
           href="#top"
+          onClick={() => setMenuOpen(false)}
           className="font-display font-semibold text-[15px] tracking-tight text-text-primary flex items-center gap-2"
         >
           <span className="status-dot" />
@@ -62,14 +64,23 @@ export default function Nav() {
             </a>
           ))}
         </div>
-        <a
-          href="#contact"
-          className="text-sm font-medium px-4 py-2 rounded-lg glass-strong hover:border-accent-amber/40 transition-colors text-text-primary inline-flex items-center gap-1.5"
-        >
-          Let&apos;s talk
-          <ArrowUpRight size={14} />
-        </a>
+        <div className="flex items-center gap-2">
+          <a href="#contact" onClick={() => setMenuOpen(false)}
+            className="text-sm font-medium px-4 py-2 rounded-lg glass-strong hover:border-accent-amber/40 transition-colors text-text-primary inline-flex items-center gap-1.5">
+            Let&apos;s talk <ArrowUpRight size={14} />
+          </a>
+          <button className="md:hidden rounded-lg glass-strong p-2.5 text-text-primary"
+            type="button" aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-controls="mobile-navigation" aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((value) => !value)}>
+            {menuOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
       </nav>
+      {menuOpen && <div id="mobile-navigation" className="md:hidden mx-4 mt-2 rounded-2xl glass-strong p-2 depth-shadow">
+        {links.map((link) => <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)}
+          className="block rounded-lg px-4 py-3 text-sm text-text-primary hover:bg-white/5">{link.label}</a>)}
+      </div>}
     </header>
   );
 }

@@ -6,7 +6,7 @@ export const profile = {
   phone: "+91 98702 45774",
   linkedin: "https://linkedin.com/in/tanish-phalswal",
   summary:
-    "I build production SaaS products with React and Next.js, then deploy and operate them myself — AWS, Nginx, PM2, CI/CD, the whole pipeline. Three years at Cut Edge Technology building CRM systems that real businesses run on every day.",
+    "I build production web products with React and Next.js, then deploy and operate them myself — AWS, Nginx, PM2, CI/CD, the whole pipeline. My work spans business applications, education platforms, websites, and design.",
 };
 
 export const stack = {
@@ -108,14 +108,56 @@ export const projects: Project[] = [
       { label: "status", value: "live" },
     ],
   },
+  {
+    slug: "erp",
+    name: "Internal ERP",
+    tagline: "Business operations in one workspace",
+    stack: ["React.js", "Node.js", "MongoDB"],
+    status: "Production",
+    description:
+      "An internal ERP workspace for connected operational workflows, dashboards, and reporting.",
+    highlights: [
+      "Built application workflows and connected operational views",
+      "Integrated frontend screens with backend APIs and business data",
+      "Supported deployment and ongoing product changes",
+    ],
+    metrics: [
+      { label: "role", value: "full-stack" },
+      { label: "stack", value: "MERN" },
+      { label: "scope", value: "internal" },
+    ],
+  },
 ];
 
 export const experience = [
   {
+    company: "Calance",
+    role: "MERN Stack Developer",
+    location: "Gurugram, India",
+    website: "https://www.calanceus.com/",
+    period: "Sep 2026 — Present",
+    points: [
+      "Building and improving MERN applications for business and training workflows",
+      "Working across frontend, APIs, integrations, and deployment support",
+    ],
+  },
+  {
+    company: "Cross Learning",
+    role: "MERN Stack Developer",
+    location: "Gurugram, India",
+    website: "https://crosslearning.in/",
+    period: "Jul 2026 — Sep 2026",
+    points: [
+      "Developed web experiences and integrations for the education platform",
+      "Supported production updates across programs, school solutions, and website workflows",
+    ],
+  },
+  {
     company: "Cut Edge Technology Pvt. Ltd.",
     role: "Full-Stack Developer & DevOps Engineer",
     location: "Gurgaon, India",
-    period: "Nov 2022 — Present",
+    website: "https://cutedgetechnology.com/",
+    period: "Nov 2022 — Jul 2026",
     points: [
       "Built scalable CRM and SaaS platforms in React.js — dashboards, lead management, business workflows",
       "Designed CI/CD pipelines with GitHub Actions and configured Nginx + PM2 for production hosting",

@@ -263,3 +263,24 @@ body::before {
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
+
+/* Mixed-aspect gallery: native image ratios, compact multi-column flow. */
+.portfolio-masonry {
+  columns: 2;
+  column-gap: 0.75rem;
+}
+
+.portfolio-masonry-item {
+  display: inline-block;
+  break-inside: avoid;
+  margin-bottom: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .portfolio-masonry { columns: 3; column-gap: 1rem; }
+  .portfolio-masonry-item { margin-bottom: 1rem; }
+}
+
+@media (min-width: 1024px) {
+  .portfolio-masonry { columns: 4; }
+}

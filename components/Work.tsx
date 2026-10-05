@@ -1,115 +1,73 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { AppWindow, PenTool, ImageIcon, Globe } from "lucide-react";
+import { AppWindow, Megaphone, PenTool, Globe2, ImageIcon } from "lucide-react";
+import { categories, webApps, websites, type WorkCategory, type WorkItem } from "@/lib/work-data";
 import SectionHeader from "./SectionHeader";
-import CaseStudyCard from "./CaseStudyCard";
-import FigmaCard from "./FigmaCard";
-import GraphicCard from "./GraphicCard";
-import { webApps, figmaWork, graphicWork, websites } from "@/lib/work-data";
+import { ProjectList } from "./Projects";
+import { DesignCards, GraphicGallery, MarketingCards, WebsiteCards } from "./WorkCards";
 
-const TABS = [
-  { id: "webapps",  label: "Web Apps",       icon: AppWindow, count: webApps.length },
-  { id: "figma",    label: "Figma / UI",     icon: PenTool,   count: figmaWork.length },
-  { id: "graphic",  label: "Graphic Design", icon: ImageIcon, count: graphicWork.length },
-  { id: "websites", label: "Websites",       icon: Globe,     count: websites.length },
-] as const;
+const icons = { webapps: AppWindow, marketing: Megaphone, uiux: PenTool, websites: Globe2, graphic: ImageIcon };
 
-type TabId = typeof TABS[number]["id"];
-
-const tabAccent: Record<TabId, string> = {
-  webapps:  "#5b9df0",
-  figma:    "#a78bfa",
-  graphic:  "#f2a65a",
-  websites: "#6fcf97",
-};
-
-export default function Work() {
-  const [active, setActive] = useState<TabId>("webapps");
+export default function Work({
+  uiUxWork, marketingWork, graphicWork,
+}: {
+  uiUxWork: WorkItem[];
+  marketingWork: WorkItem[];
+  graphicWork: WorkItem[];
+}) {
+  const [active, setActive] = useState<WorkCategory>("webapps");
+  const counts: Record<WorkCategory, number> = {
+    webapps: webApps.length, marketing: marketingWork.length, uiux: uiUxWork.length,
+    websites: websites.length, graphic: graphicWork.length,
+  };
+  const current = categories.find((category) => category.id === active)!;
 
   return (
-    <section id="work" className="section-pad px-5 max-w-6xl mx-auto">
-      <SectionHeader
-        eyebrow="~/work"
-        eyebrowIcon={AppWindow}
-        title="Full-studio showcase"
-        description="Web apps, UI designs, graphic work, and websites â€” built, designed, and shipped by one person."
-        accent="#5b9df0"
-      />
+    <section id="work" className="section-pad scroll-mt-20 px-5 max-w-6xl mx-auto">
+      <SectionHeader eyebrow="~/work" eyebrowIcon={AppWindow} title="Selected work"
+        description="Applications, websites, campaigns, interfaces, and visuals — from build to launch."
+        accent="var(--accent-blue)" />
 
-      {/* Tab strip */}
-      <div className="flex flex-wrap gap-2 mb-8 p-1.5 glass rounded-2xl w-fit max-w-full">
-        {TABS.map((tab) => {
-          const Icon = tab.icon;
-          const isActive = active === tab.id;
+      <div role="tablist" aria-label="Work categories"
+        className="mb-8 flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
+        {categories.map((category) => {
+          const Icon = icons[category.id];
+          const selected = active === category.id;
           return (
-            <button
-              key={tab.id}
-              onClick={() => setActive(tab.id)}
-              className={`relative flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${isActive ? "text-white" : "text-text-muted hover:text-text-primary"}`}
-            >
-              {isActive && (
-                <motion.span
-                  layoutId="tab-pill"
-                  className="absolute inset-0 rounded-xl"
-                  style={{ background: tabAccent[tab.id] }}
-                  transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                />
-              )}
-              <Icon size={15} className="relative z-10" />
-              <span className="relative z-10 hidden sm:inline">{tab.label}</span>
-              <span className={`relative z-10 font-mono text-[10px] px-1.5 py-0.5 rounded-full ${isActive ? "bg-black/20 text-white/80" : "bg-bg-elevated text-text-faint"}`}>
-                {tab.count}
-              </span>
+            <button key={category.id} id={`work-tab-${category.id}`} role="tab"
+              aria-selected={selected} aria-controls="work-panel" tabIndex={selected ? 0 : -1}
+              onClick={() => setActive(category.id)}
+              onKeyDown={(event) => {
+                if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+                event.preventDefault();
+                const index = categories.findIndex(({ id }) => id === active);
+                const next = categories[(index + (event.key === "ArrowRight" ? 1 : -1) + categories.length) % categories.length];
+                setActive(next.id);
+                document.getElementById(`work-tab-${next.id}`)?.focus();
+              }}
+              className={`inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-xl border px-4 py-3 text-sm transition-colors ${selected
+                ? "border-accent-blue/50 bg-accent-blue/15 text-text-primary"
+                : "border-panel-border glass text-text-muted hover:text-text-primary"}`}>
+              <Icon size={16} aria-hidden="true" />
+              {category.label}
+              {counts[category.id] > 0 && <span className="font-mono text-[11px] opacity-60">{counts[category.id]}</span>}
             </button>
           );
         })}
       </div>
 
-      {/* Tab content */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={active}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -6 }}
-          transition={{ duration: 0.25 }}
-        >
-          {active === "webapps" && (
-            <div className="space-y-4">
-              {webApps.map((cs) => <CaseStudyCard key={cs.id} cs={cs} />)}
-            </div>
-          )}
-          {active === "figma" && (
-            <div>
-              <p className="font-mono text-xs text-text-faint mb-6">
-                Replace <span className="text-[#f2a65a]">REPLACE_*</span> URLs in{" "}
-                <span className="text-[#f2a65a]">lib/work-data.ts</span> with your real Figma share links â€” previews auto-render.
-              </p>
-              <div className="grid sm:grid-cols-2 gap-5">
-                {figmaWork.map((item) => <FigmaCard key={item.id} item={item} />)}
-              </div>
-            </div>
-          )}
-          {active === "graphic" && (
-            <div>
-              <p className="font-mono text-xs text-text-faint mb-6">
-                Drop images in <span className="text-[#f2a65a]">public/graphic/filename.png</span> and set{" "}
-                <span className="text-[#f2a65a]">imagePath</span> in work-data.ts â€” cards show them automatically.
-              </p>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                {graphicWork.map((item) => <GraphicCard key={item.id} item={item} />)}
-              </div>
-            </div>
-          )}
-          {active === "websites" && (
-            <div className="space-y-4">
-              {websites.map((cs) => <CaseStudyCard key={cs.id} cs={cs} />)}
-            </div>
-          )}
-        </motion.div>
-      </AnimatePresence>
+      <div id="work-panel" role="tabpanel" aria-labelledby={`work-tab-${active}`} tabIndex={0}>
+        <p className="mb-6 text-sm text-text-muted">{current.description}</p>
+        {active === "webapps" && <>
+          <p className="mb-5 font-mono text-xs text-text-faint">Illustrative mockups — application screens are behind client logins.</p>
+          <ProjectList />
+        </>}
+        {active === "marketing" && <MarketingCards items={marketingWork} />}
+        {active === "uiux" && <DesignCards items={uiUxWork} />}
+        {active === "websites" && <WebsiteCards items={websites} />}
+        {active === "graphic" && <GraphicGallery items={graphicWork} />}
+      </div>
     </section>
   );
 }

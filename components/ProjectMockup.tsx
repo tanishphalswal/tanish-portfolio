@@ -1,4 +1,4 @@
-type MockupKind = "crm" | "marketplace" | "ecommerce" | "qaboard";
+type MockupKind = "crm" | "marketplace" | "ecommerce" | "qaboard" | "erp";
 
 const palette = {
   blue: "#5b9df0",
@@ -132,9 +132,37 @@ function QABoardMockup() {
   );
 }
 
+function ERPMockup() {
+  return (
+    <svg viewBox="0 0 480 300" className="w-full h-full" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustrative ERP dashboard mockup">
+      <rect width="480" height="300" fill="#0d1219" />
+      <rect width="94" height="300" fill="#0a0e14" />
+      <rect x="18" y="20" width="50" height="10" rx="5" fill={palette.amber} opacity=".8" />
+      {[60, 91, 122, 153, 184].map((y) => <rect key={y} x="18" y={y} width="57" height="8" rx="4" fill={palette.fill} />)}
+      <rect x="115" y="25" width="175" height="12" rx="6" fill={palette.fill} />
+      {[0, 1, 2].map((i) => (
+        <g key={i} transform={`translate(${115 + i * 116}, 62)`}>
+          <rect width="102" height="64" rx="9" fill={palette.fill} stroke={palette.line} />
+          <rect x="12" y="13" width="48" height="7" rx="3" fill={palette.fill} />
+          <rect x="12" y="33" width="39" height="15" rx="4" fill={[palette.blue, palette.amber, palette.green][i]} opacity=".65" />
+        </g>
+      ))}
+      <rect x="115" y="145" width="340" height="130" rx="10" fill={palette.fill} stroke={palette.line} />
+      {[0, 1, 2, 3].map((i) => (
+        <g key={i} transform={`translate(130, ${161 + i * 27})`}>
+          <rect width="110" height="7" rx="3" fill={palette.fill} />
+          <rect x="150" width={45 + i * 20} height="7" rx="3" fill={palette.blue} opacity=".25" />
+          <circle cx="290" cy="4" r="5" fill={i % 2 ? palette.amber : palette.green} opacity=".7" />
+        </g>
+      ))}
+    </svg>
+  );
+}
+
 export default function ProjectMockup({ kind }: { kind: MockupKind }) {
   if (kind === "crm") return <CRMMockup />;
   if (kind === "marketplace") return <MarketplaceMockup />;
   if (kind === "qaboard") return <QABoardMockup />;
+  if (kind === "erp") return <ERPMockup />;
   return <EcommerceMockup />;
 }

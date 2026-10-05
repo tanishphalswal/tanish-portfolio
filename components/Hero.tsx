@@ -228,10 +228,10 @@ export default function Hero() {
           </p>
           <div className="mt-9 flex flex-wrap items-center gap-4">
             <MagneticButton
-              href="#projects"
+              href="#work"
               className="group px-5 py-3 rounded-xl bg-text-primary text-bg font-medium text-sm hover:opacity-90 transition-opacity items-center gap-2"
             >
-              View projects
+              View work
               <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
             </MagneticButton>
             <MagneticButton

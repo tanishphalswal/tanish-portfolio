@@ -1,30 +1,22 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FolderGit2, ChevronRight, ExternalLink } from "lucide-react";
+import { FolderGit2, ChevronRight } from "lucide-react";
 import { projects } from "@/lib/data";
 import ProjectMockup from "./ProjectMockup";
 import SectionHeader from "./SectionHeader";
 import TiltCard from "./TiltCard";
 
-const mockupKind: Record<string, "crm" | "marketplace" | "ecommerce" | "qaboard"> = {
+const mockupKind: Record<string, "crm" | "marketplace" | "ecommerce" | "qaboard" | "erp"> = {
   manetor: "crm",
   trackops: "qaboard",
   setlup: "marketplace",
   suppkart: "ecommerce",
+  erp: "erp",
 };
 
-export default function Projects() {
+export function ProjectList() {
   return (
-    <section id="projects" className="section-pad px-5 max-w-6xl mx-auto">
-      <SectionHeader
-        eyebrow="~/projects"
-        eyebrowIcon={FolderGit2}
-        title="Things in production"
-        description="Mockups below — actual screenshots are behind client logins. Everything described here is live and running."
-        accent="var(--accent-blue)"
-      />
-
       <div className="space-y-6">
         {projects.map((project, idx) => (
           <motion.article
@@ -49,7 +41,7 @@ export default function Projects() {
                   <h3 className="font-display text-2xl font-semibold text-text-primary">
                     {project.name}
                   </h3>
-                  <ExternalLink size={16} className="text-text-faint shrink-0" />
+                  <span className="font-mono text-[10px] text-text-faint shrink-0">PROJECT</span>
                 </div>
                 <p className="text-accent-amber text-sm font-mono mt-1">
                   {project.tagline}
@@ -108,6 +100,16 @@ export default function Projects() {
           </motion.article>
         ))}
       </div>
+  );
+}
+
+export default function Projects() {
+  return (
+    <section id="projects" className="section-pad px-5 max-w-6xl mx-auto">
+      <SectionHeader eyebrow="~/projects" eyebrowIcon={FolderGit2} title="Things in production"
+        description="Illustrative mockups; actual application screens are behind client logins."
+        accent="var(--accent-blue)" />
+      <ProjectList />
     </section>
   );
 }
