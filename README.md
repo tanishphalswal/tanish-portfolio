@@ -11,6 +11,17 @@ npm run dev
 
 Open http://localhost:3000. Run `npm test`, `npm run lint`, and `npm run build` before deployment.
 
+## Browser verification
+
+```bash
+npx playwright install chromium
+npm run test:browser
+```
+
+Stop any other Next.js development server in this checkout first. The browser suite starts its own local server and checks desktop (1440px), tablet (768px), and mobile (390px) layouts, all categories, homepage images, mobile navigation, keyboard controls, gallery pagination, and viewer focus. It temporarily creates 40 mixed-ratio graphic fixtures and three UI/UX images, then removes them; these are test data, not portfolio work. Existing media is preserved. An installed Chromium executable can be supplied with `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` if the standard browser download is unavailable.
+
+Phase completion and pending work are tracked in [the lifecycle checkpoint](docs/superpowers/plans/2026-10-05-portfolio-lifecycle.md).
+
 ## Content
 
 - `lib/data.ts`: profile, stack, Web App projects, experience, certifications, workflow.

@@ -41,9 +41,9 @@
 
 **Baseline feature commit:** `3e86bb346eef629a4b59f4aa3d5a9099dbfd6b44` on `main`, verified through GitHub on 2026-10-05. Phases 1–5 were implemented together before the user requested separate lifecycle commits. Do not redo or split that published commit.
 
-**Current state:** Requested implementation is shipped. Lifecycle documentation is the next checkpoint. Original UI/UX and graphic assets are intentionally pending user input; browser interaction review is pending runtime access.
+**Current state:** Phases 1–6 are complete in the commits recorded below and this phase 6 commit. Browser verification is reproducible, mobile Escape dismissal and viewer keyboard focus are fixed. Original UI/UX and graphic assets are intentionally pending user input. The next content task is phase 7 after those assets are supplied.
 
-**Verification:** Fresh runs of six automated tests, ESLint, TypeScript, and the production build all passed on 2026-10-05 before the documentation checkpoint. Next.js prerendered `/` successfully. Browser interaction review has not been completed; do not infer successful deployment from a GitHub push.
+**Verification:** The baseline's six automated tests, ESLint, TypeScript, and production build passed on 2026-10-05. Phase 6 additionally ran Chromium at desktop 1440px, tablet 768px, and mobile 390px; verified all tabs, website images, mobile menu, keyboard controls, and 40 mixed-ratio synthetic graphics. Browser tests reproduced two bugs before their fixes: mobile Escape dismissal and viewer focus containment. The suite passed after the fixes. Synthetic assets are removed before release; the user's actual artwork has not yet been reviewed. Do not infer successful deployment from a GitHub push.
 
 | Phase | Deliverable | Status | Checkpoint |
 | --- | --- | --- | --- |
@@ -52,7 +52,7 @@
 | 3 | Four website cards and three actual homepage captures | Implemented and pushed | Baseline feature commit |
 | 4 | Named UI/UX folders, varied collage layout, viewer | Implemented and pushed; assets pending | Baseline feature commit |
 | 5 | Graphic masonry, auto-discovery, native ratios, Load more | Implemented and pushed; artwork pending | Baseline feature commit |
-| 6 | Quality checks and durable lifecycle record | Automated checks passed; browser review pending | Documentation commit containing this file |
+| 6 | Browser checks, keyboard fixes, quality checks, durable lifecycle record | Complete; tests, lint, TypeScript, clean production build passed | Phase 6 commit containing this file |
 | 7 | Import user-provided UI/UX, graphics, marketing assets | Waiting for supplied assets | No assets supplied yet |
 
 ## Completed implementation phases
@@ -111,9 +111,23 @@
 - [x] Run `npm test` and confirm all six tests pass.
 - [x] Run `npm run lint` and `npx tsc --noEmit`; confirm exit code 0.
 - [x] Run a fresh `npm run build`; confirm exit code 0 and static prerendering of `/`.
-- [ ] Review browser behavior at desktop, tablet, and mobile sizes when a runnable preview is accessible: all tabs, hamburger, website links, viewer Escape/arrows, graphic Load more, no horizontal overflow.
-- [ ] With real graphics, verify 30–40 mixed-ratio images and lazy loading in the browser.
+- [x] Review browser behavior at desktop, tablet, and mobile sizes: all tabs, hamburger, website links/images, viewer Escape/arrows, graphic Load more, no horizontal overflow.
+- [x] Verify 40 temporary mixed-ratio graphics, lazy image attributes, and 12/24/36/40 pagination in Chromium. Approved real graphics remain a phase 7 input.
+- [x] Reproduce mobile Escape and viewer focus bugs in browser tests before fixing them; verify menu dismissal, viewer forward/backward focus containment, image navigation focus, and opener restoration after fixes.
+- [x] Add `npm run test:browser`, a dev-only Playwright dependency, and README instructions. Tests generate synthetic media without overwriting supplied files and clean it up.
 - [x] Persist this lifecycle record and push it as its own documentation checkpoint.
+
+### Phase 6 execution ledger
+
+- Base: `eff6db8f10c5ce8345f3effb9ad8cfb86dfce576`, the initial lifecycle checkpoint on remote `main`.
+- Ruling: use temporary synthetic fixtures for the 40-image gallery and HRMS viewer checks — approved artwork was not supplied — visual assessment of the user's actual content remains pending phase 7.
+- Runtime recovery: standard Chromium download was truncated; a locally extracted Chromium executable enabled Playwright checks. The fallback browser package is not a committed dependency.
+- RED: browser tests passed category/layout, tab keyboard, and gallery checks; failed mobile Escape dismissal and viewer Tab focus containment.
+- GREEN: mobile Escape now closes and focuses its trigger; native modal dialog isolates the page, explicitly cycles Tab/Shift+Tab, retains navigation focus, and restores the opener on close. All five browser scenarios and their parent test passed.
+- Release checks: `npm test` passed 6/6; `npm run test:browser` passed all five child scenarios (6/6 including the parent); ESLint and `npx tsc --noEmit` exited 0; final `npm run build` exited 0 with `/` statically prerendered after removing all temporary media.
+- Final review: independent reviewer found no Critical or Important issues.
+- Final: minor (deferred): gallery ratio checks inspect declared dimensions and rendered layout; decoding representative graphic images is not asserted. Website screenshots are decoded in browser tests. Add explicit graphic decoding checks alongside the supplied-artwork review in phase 7.
+- Integration: user already authorized phase completion and push to `main`; phase 6 is committed with this checkpoint and the remote SHA is verified after pushing.
 
 ### Phase 7: Supplied media integration
 
@@ -123,7 +137,7 @@
 - [ ] Add approved graphics to the matching artwork folders and marketing media to their campaign folders.
 - [ ] Add Realty Vue's website cover when supplied; add its URL only when live.
 - [ ] Run `npm test`, `npm run lint`, `npx tsc --noEmit`, and `npm run build`.
-- [ ] Review loaded media, original ratios, image order, pagination, and viewer interactions in a browser.
+- [ ] Review loaded media, original ratios, image order, pagination, and viewer interactions in a browser; scroll representative portrait/landscape/square graphics into view and await image decoding.
 - [ ] Commit and push only this phase's changes; verify remote commit; update this checkpoint.
 
 ## Resume and push protocol

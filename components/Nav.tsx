@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 
 const links = [
@@ -13,6 +13,19 @@ const links = [
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        menuRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -69,7 +82,7 @@ export default function Nav() {
             className="text-sm font-medium px-4 py-2 rounded-lg glass-strong hover:border-accent-amber/40 transition-colors text-text-primary inline-flex items-center gap-1.5">
             Let&apos;s talk <ArrowUpRight size={14} />
           </a>
-          <button className="md:hidden rounded-lg glass-strong p-2.5 text-text-primary"
+          <button ref={menuRef} className="md:hidden rounded-lg glass-strong p-2.5 text-text-primary"
             type="button" aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-controls="mobile-navigation" aria-expanded={menuOpen}
             onClick={() => setMenuOpen((value) => !value)}>
